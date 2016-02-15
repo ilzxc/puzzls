@@ -33,10 +33,12 @@ model = () ->
 
     dirs = [ {x: -1, y: 0}, {x: 0, y: -1}, {x: 1, y: 0}, {x: 0, y: 1} ]
 
-    @set_position = (x, y) ->
-        @state.position = {x: x, y: y}
-        @state.level[ @state.idx @state.position ] = 0
-        return
+    @set_position = (tilexy) ->
+        if (@state.get tilexy) != 0
+            @state.position = tilexy
+            @state.level[ @state.idx @state.position ] = 0
+            return true
+        return false
 
     @move = (direction) ->
         path = []
@@ -50,17 +52,18 @@ model = () ->
     steppify = (i) -> i / Math.abs i
     @clicked = (tilexy) ->
         if @state.position is undefined
-            @set_position tilexy.x, tilexy.y
-            return [tilexy]
+            if @set_position tilexy
+                return [tilexy]
+            return []
         if tilexy.x is @state.position.x
             dy = steppify tilexy.y - @state.position.y
             console.log dy
-            result = if dy != 0 then @move {x: 0, y: dy} else []
+            result = [@state.position].concat if dy != 0 then @move {x: 0, y: dy} else []
             return result
         if tilexy.y is @state.position.y
             dx = steppify tilexy.x - @state.position.x
             console.log dx
-            result = if dx != 0 then @move {x: dx, y: 0} else []
+            result = [@state.position].concat if dx != 0 then @move {x: dx, y: 0} else []
             return result
         []
 

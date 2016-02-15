@@ -47,6 +47,7 @@ view = (model, center) ->
         test = @model.clicked tile.info
         for step in test
             @tiles.children[ @model.state.idx step ].fillColor = 'green'
+        @tiles.children[ @model.state.idx test[test.length - 1] ].fillColor = 'blue'
     return this
 
 module.exports = { tile, view }

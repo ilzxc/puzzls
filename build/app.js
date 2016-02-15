@@ -89,12 +89,13 @@ model = function() {
       y: 1
     }
   ];
-  this.set_position = function(x, y) {
-    this.state.position = {
-      x: x,
-      y: y
-    };
-    this.state.level[this.state.idx(this.state.position)] = 0;
+  this.set_position = function(tilexy) {
+    if ((this.state.get(tilexy)) !== 0) {
+      this.state.position = tilexy;
+      this.state.level[this.state.idx(this.state.position)] = 0;
+      return true;
+    }
+    return false;
   };
   this.move = function(direction) {
     var np, path;
@@ -113,25 +114,27 @@ model = function() {
   this.clicked = function(tilexy) {
     var dx, dy, result;
     if (this.state.position === void 0) {
-      this.set_position(tilexy.x, tilexy.y);
-      return [tilexy];
+      if (this.set_position(tilexy)) {
+        return [tilexy];
+      }
+      return [];
     }
     if (tilexy.x === this.state.position.x) {
       dy = steppify(tilexy.y - this.state.position.y);
       console.log(dy);
-      result = dy !== 0 ? this.move({
+      result = [this.state.position].concat(dy !== 0 ? this.move({
         x: 0,
         y: dy
-      }) : [];
+      }) : []);
       return result;
     }
     if (tilexy.y === this.state.position.y) {
       dx = steppify(tilexy.x - this.state.position.x);
       console.log(dx);
-      result = dx !== 0 ? this.move({
+      result = [this.state.position].concat(dx !== 0 ? this.move({
         x: dx,
         y: 0
-      }) : [];
+      }) : []);
       return result;
     }
     return [];
@@ -221,14 +224,13 @@ view = function(model, center) {
   h = 60 * model.state.dimensions.y;
   this.tiles.translate([center.x - (w * 0.5), center.y - (h * 0.5)]);
   this.signal = function(tile) {
-    var k, len, results, step, test;
+    var k, len, step, test;
     test = this.model.clicked(tile.info);
-    results = [];
     for (k = 0, len = test.length; k < len; k++) {
       step = test[k];
-      results.push(this.tiles.children[this.model.state.idx(step)].fillColor = 'green');
+      this.tiles.children[this.model.state.idx(step)].fillColor = 'green';
     }
-    return results;
+    return this.tiles.children[this.model.state.idx(test[test.length - 1])].fillColor = 'blue';
   };
   return this;
 };
