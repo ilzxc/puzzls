@@ -47,7 +47,7 @@ model = () ->
             @state.level[@state.idx np] = 0
             @state.position = np
             path.push np
-        return path
+        path
 
     steppify = (i) -> i / Math.abs i
     @clicked = (tilexy) ->
@@ -57,12 +57,10 @@ model = () ->
             return []
         if tilexy.x is @state.position.x
             dy = steppify tilexy.y - @state.position.y
-            console.log dy
             result = [@state.position].concat if dy != 0 then @move {x: 0, y: dy} else []
             return result
         if tilexy.y is @state.position.y
             dx = steppify tilexy.x - @state.position.x
-            console.log dx
             result = [@state.position].concat if dx != 0 then @move {x: dx, y: 0} else []
             return result
         []
