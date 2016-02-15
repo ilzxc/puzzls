@@ -1,0 +1,11 @@
+body {
+    background-color: #4488ee;
+}
+
+#puzzls {
+    background-color: #eeeeff;
+    margin: 30px auto auto auto;
+    display: block;
+    width: 1000px;
+    height: 600px;
+}
