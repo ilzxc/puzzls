@@ -1,5 +1,6 @@
 ### level model values & functions: ###
-model = () ->
+model = (controller) ->
+    @controller = controller
     @state = new () -> {
         level: [
             1, 1, 1, 1, 1
@@ -33,6 +34,12 @@ model = () ->
 
     dirs = [ {x: -1, y: 0}, {x: 0, y: -1}, {x: 1, y: 0}, {x: 0, y: 1} ]
 
+    @new = (level) ->
+        @state.level = level.data
+        @state.dimensions = level.dimensions
+        @state.position = undefined
+        return
+
     @set_position = (tilexy) ->
         if (@state.get tilexy) != 0
             @state.position = tilexy
@@ -47,6 +54,12 @@ model = () ->
             @state.level[@state.idx np] = 0
             @state.position = np
             path.push np
+        if @checkwin()
+            controller.advance()
+            return []
+        else if @checkstuck()
+            controller.reset()   
+            return []  
         path
 
     steppify = (i) -> i / Math.abs i
@@ -65,8 +78,10 @@ model = () ->
             return result
         []
 
-    @checkwin = () -> 0 is state.level.reduce ((pv, cv) -> pv + cv), 0
-    
+    @checkwin = () -> 0 is @state.level.reduce ((pv, cv) -> pv + cv), 0
+    @checkstuck = () ->
+        result = [(@state.is_available d) for d in dirs][0].filter (i) -> i is true 
+        return result.length == 0
     return this
 
 module.exports = { model }

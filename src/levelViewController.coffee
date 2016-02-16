@@ -1,3 +1,6 @@
+colorFree = '#F7F8B0'
+colorTaken = '#FF4941'
+
 tile = (x, y, w, h, bus, taken) ->
     result = new Path.Rectangle {
         info: {x: x, y: y}
@@ -8,17 +11,11 @@ tile = (x, y, w, h, bus, taken) ->
         radius: ((w + h) * 0.5) * 0.125
         strokeColor: 'black'
         strokeWidth: 2
-        fillColor: if taken is 0 then {
-                gradient: { stops: ['yellow', 'red', 'red'], radial : true }
-                origin: [0, 0]
-                destination: [w, h]
-            } else { 
-                gradient: { stops: ['white', 'grey', 'grey'], radial: true }
-                origin: [0, 0]
-                destination: [w, h]
-            }
+        fillColor: if taken is 0 then colorTaken else colorFree
         onMouseDown: (event) -> 
             bus.signal this
+        reset: () -> 
+            @fillColor = if taken is 0 then colorTaken else colorFree
     }
     result.translate [x * w, y * h]
     return result
@@ -44,8 +41,9 @@ tileAnimator = () ->
                 color_change: data[2]
             }
             return
+        reset: () ->
+            @queue.splice 0, @queue.length - 1
         onFrame: (event) ->
-            console.log "tileAnimator onFrame"
             current = new Date().getTime()
             removals = []
             for item, idx in @queue

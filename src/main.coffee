@@ -3,29 +3,22 @@ level = require './levelModel.js'
 viewcontroller = require './levelViewController.js'
 tc = require './titleCard.js'
 
-main = () ->
-    @current = new level.model()
-    test = new viewcontroller.view @current, view.center
-    @animator = test.animator
-    return this
-
 titleAnimator = () ->
     @result = new Path {
         next: 0
         cards: ['one', 'two', '3', 'four', 'five']
-        obj: null
+        obj: []
         go: () ->
-            @obj = new tc.titleCard view.size, @cards[@next]
+            @obj.push new tc.titleCard view.size, @cards[@next]
             @next += 1
         onFrame: (event) ->
-            console.log 'title animator onFrame'
-            if @obj != null
-                diff = new Date().getTime() - @obj.started
+            for o in @obj
+                diff = new Date().getTime() - o.started
                 if diff < 2000
                     return
                 else 
-                    @obj.remove()
-                    @obj = null
+                    o.remove()
+                    @obj = []
     }
     return @result
 
@@ -34,7 +27,36 @@ window.onload = () ->
     paper.setup 'puzzls'
 
     fc = utils.frameCounter view.size    
-    app = new main()
-
-    testing = new titleAnimator()
-    testing.go()
+    @current = new level.model this
+    @vc = new viewcontroller.view @current, view.center
+    @ta = new titleAnimator()
+    @ta.go()
+    
+    @advance = () ->
+        @current.new {
+            data: [
+                1, 1, 1, 1, 0
+                1, 1, 1, 1, 0
+                1, 1, 1, 1, 1
+                1, 1, 1, 1, 1
+                1, 1, 1, 1, 1
+            ]
+            dimensions: {x: 5, y: 5}
+        }
+        @vc.tiles.remove()
+        @vc = new viewcontroller.view @current, view.center
+        @ta.go()
+    @reset = () ->
+        @current.new {
+            data: [
+                1, 1, 1, 1, 1
+                1, 0, 1, 1, 1
+                1, 1, 1, 1, 1
+                1, 1, 1, 1, 1
+                1, 1, 1, 1, 1
+            ]
+            dimensions: {x: 5, y: 5}
+        }
+        @vc.tiles.remove()
+        @vc = new viewcontroller.view @current, view.center
+        return
