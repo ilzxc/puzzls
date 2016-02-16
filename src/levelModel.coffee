@@ -35,7 +35,7 @@ model = (controller) ->
     dirs = [ {x: -1, y: 0}, {x: 0, y: -1}, {x: 1, y: 0}, {x: 0, y: 1} ]
 
     @new = (level) ->
-        @state.level = level.data
+        @state.level = [i for i in level.data][0]
         @state.dimensions = level.dimensions
         @state.position = undefined
         return
