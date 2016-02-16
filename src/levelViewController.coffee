@@ -28,35 +28,39 @@ colorCrossfade = (string1, string2) ->
     hsv.concat [hsv[1].map (num, idx) -> num - hsv[0][idx]]
 
 tileAnimator = () ->
-    @queue = []
     data = colorCrossfade '#2EFB47', '#0BABDF'
-    @add = (tile, delay = 0) ->
-        time = new Date().getTime() + delay
-        duration = 350
-        @queue.push {
-            start: time
-            duration: duration
-            end: time + duration
-            object: tile
-            color_start: data[0]
-            color_end: data[1]
-            color_change: data[2]
-        }
-    @animate = (event) ->
-        current = new Date().getTime()
-        removals = []
-        for item, idx in @queue
-            if current >= item.end
-                item.object.fillColor = { hue: item.color_end[0], saturation: item.color_end[1], brightness: item.color_end[2] }
-                removals.push idx
-        for r in removals
-            @queue.splice r, 1
-        for each in (@queue.filter (i) -> current >= i.start)
-            t = ((current - each.start) / each.duration)
-            result = [0, 1, 2].map (i) -> t * each.color_change[i] + each.color_start[i]
-            each.object.fillColor = { hue: result[0], saturation: result[1], brightness: result[2] }
-        return
-    return this
+    result = new Path {
+        queue: []
+        add: (tile, delay = 0) ->
+            time = new Date().getTime() + delay
+            duration = 350
+            @queue.push {
+                start: time
+                duration: duration
+                end: time + duration
+                object: tile
+                color_start: data[0]
+                color_end: data[1]
+                color_change: data[2]
+            }
+            return
+        onFrame: (event) ->
+            console.log "tileAnimator onFrame"
+            current = new Date().getTime()
+            removals = []
+            for item, idx in @queue
+                if current >= item.end
+                    item.object.fillColor = { hue: item.color_end[0], saturation: item.color_end[1], brightness: item.color_end[2] }
+                    removals.push idx
+            for r in removals
+                @queue.splice r, 1
+            for each in (@queue.filter (i) -> current >= i.start)
+                t = ((current - each.start) / each.duration)
+                result = [0, 1, 2].map (i) -> t * each.color_change[i] + each.color_start[i]
+                each.object.fillColor = { hue: result[0], saturation: result[1], brightness: result[2] }
+            return
+    }
+    return result
 
 view = (model, center) ->
     @animator = new tileAnimator()
@@ -70,8 +74,8 @@ view = (model, center) ->
     h = 60 * model.state.dimensions.y
     @tiles.translate [center.x - (w * 0.5), center.y - (h * 0.5)]
     @signal = (tile) ->
-        test = @model.clicked tile.info
-        for step, idx in test
+        steps = @model.clicked tile.info
+        for step, idx in steps
             @animator.add @tiles.children[ @model.state.idx step ], 70 * idx
     return this
 
