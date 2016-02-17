@@ -556,7 +556,7 @@ intermediate = [
   }
 ];
 
-levels = (triangles.concat(dvaVariations)).concat(intermediate);
+levels = ((basics.concat(dvaVariations)).concat(intermediate)).concat(triangles);
 
 module.exports = {
   levels: levels
