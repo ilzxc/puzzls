@@ -1,3 +1,50 @@
+triangles = [
+    {   
+        data: [
+            1, 1, 1, 1, 1
+            5, 1, 1, 1, 1
+            1, 1, 1, 1, 1
+            1, 1, 1, 1, 1
+            1, 1, 2, 1, 1
+        ]
+        dimensions: {x: 5, y: 5} 
+        name: "tri.1"
+    }
+    {   
+        data: [
+            1, 1, 4, 1, 1
+            1, 0, 4, 1, 1
+            1, 1, 1, 1, 5
+            1, 1, 1, 1, 1
+            1, 1, 1, 1, 1
+        ]
+        dimensions: {x: 5, y: 5} 
+        name: "tri.2"
+    }
+    {
+        data: [
+            1, 1, 1, 1, 1
+            1, 0, 1, 1, 1
+            1, 1, 1, 1, 1
+            1, 1, 0, 1, 1
+            1, 2, 1, 1, 1
+        ]
+        dimensions: {x: 5, y: 5} 
+        name: "tri.3"
+    }
+    {
+        data: [
+            1, 1, 1, 1, 1
+            1, 0, 5, 1, 1
+            1, 1, 1, 1, 1
+            1, 0, 1, 1, 1
+            1, 1, 3, 1, 1
+        ]
+        dimensions: {x: 5, y: 5} 
+        name: "tri.4"
+    }
+]
+
 basics = [
     {   
         data: [
@@ -88,7 +135,7 @@ dvaVariations = [
             1, 1, 1, 1, 1
         ]
         dimensions: {x: 5, y: 5} 
-        name: "dva.1"
+        name: "dva.0"
     }
     {
         data: [
@@ -283,6 +330,6 @@ intermediate = [
     # }
 ]
 
-levels = (basics.concat dvaVariations).concat intermediate
+levels = (triangles.concat dvaVariations).concat intermediate
 
 module.exports = { levels }

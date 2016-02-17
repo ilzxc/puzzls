@@ -2,22 +2,13 @@
 model = (controller) ->
     @controller = controller
     @state = new () -> {
-        level: [
-            1, 1, 1, 1, 1
-            1, 0, 1, 1, 1
-            1, 1, 1, 1, 1
-            1, 1, 1, 1, 1
-            1, 1, 1, 1, 1
-        ]
-        dimensions: {x: 5, y: 5}
-        position: undefined
         get: (input) -> @level[@idx input]
         idx: (input) -> @dimensions.x * input.y + input.x
         is_available: (direction) ->
             np = @step direction
             if np.x < 0 or np.x >= @dimensions.x then return false
             if np.y < 0 or np.y >= @dimensions.y then return false
-            @level[@idx np] is 1
+            @level[@idx np] != 0
         step: (direction) -> {
                 x: @position.x + direction.x
                 y: @position.y + direction.y
@@ -41,8 +32,9 @@ model = (controller) ->
         return
 
     @set_position = (tilexy) ->
-        if (@state.get tilexy) != 0
+        if (@state.get tilexy) == 1
             @state.position = tilexy
+            tinfo = @state.level[ @state.idx @state.position ]
             @state.level[ @state.idx @state.position ] = 0
             return true
         return false
@@ -51,6 +43,11 @@ model = (controller) ->
         path = []
         while @state.is_available direction
             np = @state.step direction
+            idx = @state.idx np
+            if @state.level[idx] is 2 then direction = {x:  0, y: -1}
+            if @state.level[idx] is 3 then direction = {x:  1, y:  0}
+            if @state.level[idx] is 4 then direction = {x:  0, y:  1}
+            if @state.level[idx] is 5 then direction = {x: -1, y:  0}
             @state.level[@state.idx np] = 0
             @state.position = np
             path.push np

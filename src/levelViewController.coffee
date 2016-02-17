@@ -2,7 +2,7 @@ colorFree = '#F7F8B0'
 colorTaken = '#FF4941'
 
 tile = (x, y, w, h, bus, taken) ->
-    result = new Path.Rectangle {
+    result = [new Path.Rectangle {
         info: {x: x, y: y}
         taken: taken
         bus: bus
@@ -16,7 +16,16 @@ tile = (x, y, w, h, bus, taken) ->
             bus.signal this
         reset: () -> 
             @fillColor = if taken is 0 then colorTaken else colorFree
-    }
+    }]
+    makeTriangle = (angle) ->
+        toAdd = new Path.RegularPolygon new Point(w * 0.5, h * 0.5), 3, 10
+        toAdd.fillColor = toAdd.strokeColor = 'black'
+        toAdd.rotate angle
+        toAdd.onMouseDown = (event) -> @parent.children[0].onMouseDown event
+        return toAdd
+    if taken >= 2 and taken <= 5
+        result.push makeTriangle 90 * (taken - 2)
+    result = new Group result
     result.translate [x * w, y * h]
     return result
 
