@@ -6,23 +6,7 @@ sevensTop = [32, 41, 77, 135, 137, 170]
 sevensMeh = [25, 38, 43, 45, 62, 65, 83, 95, 148, 174, 226]
 sequence = [208, 209, 210, 211, 213, 215, 218, 223]
 
-levels = [threes[i] for i in threesTop][0]
-levels = levels.concat [sevens[i] for i in sevensTop][0]
-levels = levels.concat [sevens[i] for i in sevensMeh][0]
-levels = levels = levels.concat [sevens[i] for i in sequence][0]
-
 triangles = [
-    {   
-        data: [
-            1, 4, 1, 4, 1
-            3, 1, 1, 1, 1
-            1, 4, 1, 0, 0
-            1, 3, 1, 1, 1
-            1, 1, 1, 2, 1
-        ]
-        dimensions: {x: 5, y: 5} 
-        name: "tri.2 - trying"
-    }
     {   
         data: [
             1, 0, 1, 1, 1
@@ -78,9 +62,26 @@ triangles = [
         dimensions: {x: 5, y: 5} 
         name: "tri.4"
     }
+    {   
+        data: [
+            1, 4, 1, 4, 1
+            3, 1, 1, 1, 1
+            1, 4, 1, 0, 0
+            1, 3, 1, 1, 1
+            1, 1, 1, 2, 1
+        ]
+        dimensions: {x: 5, y: 5} 
+        name: "tri.2 - trying"
+    }
 ]
 
-levels = levels.concat triangles
+levels = triangles
+levels = levels.concat (threes[i] for i in threesTop)
+levels = levels.concat (sevens[i] for i in sevensTop)
+levels = levels.concat (sevens[i] for i in sevensMeh)
+levels = levels.concat (sevens[i] for i in sequence)
+
+
 
 basics = [
     {   

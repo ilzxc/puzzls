@@ -77,6 +77,11 @@ view = (model, center) ->
         for x in [0...model.state.dimensions.x]
             t.push new tile x, y, 60, 60, this, model.state.get {x: x, y: y}
     @tiles = new Group t
+    @name = new PointText {
+        point: [5, 15]
+        content: model.state.name
+        fillColor: 'black'
+    }
     w = 60 * model.state.dimensions.x
     h = 60 * model.state.dimensions.y
     @tiles.translate [center.x - (w * 0.5), center.y - (h * 0.5)]

@@ -38,10 +38,12 @@ window.onload = () ->
         @current = (@current + 1) % levels.length
         @model.new levels[@current]
         @vc.tiles.remove()
+        @vc.name.remove()
         @vc = new viewcontroller.view @model, view.center
         @ta.go levels[@current].name
     @reset = () ->
         @model.new levels[@current]
         @vc.tiles.remove()
+        @vc.name.remove()
         @vc = new viewcontroller.view @model, view.center
         return

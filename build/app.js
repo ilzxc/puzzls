@@ -1030,6 +1030,7 @@ model = function(controller) {
     ][0];
     this.state.dimensions = level.dimensions;
     this.state.position = void 0;
+    this.state.name = level.name;
   };
   this.set_position = function(tilexy) {
     var tinfo;
@@ -1285,6 +1286,11 @@ view = function(model, center) {
     }
   }
   this.tiles = new Group(t);
+  this.name = new PointText({
+    point: [5, 15],
+    content: model.state.name,
+    fillColor: 'black'
+  });
   w = 60 * model.state.dimensions.x;
   h = 60 * model.state.dimensions.y;
   this.tiles.translate([center.x - (w * 0.5), center.y - (h * 0.5)]);
@@ -1322,55 +1328,8 @@ sevensMeh = [25, 38, 43, 45, 62, 65, 83, 95, 148, 174, 226];
 
 sequence = [208, 209, 210, 211, 213, 215, 218, 223];
 
-levels = [
-  (function() {
-    var j, len, results;
-    results = [];
-    for (j = 0, len = threesTop.length; j < len; j++) {
-      i = threesTop[j];
-      results.push(threes[i]);
-    }
-    return results;
-  })()
-][0];
-
-levels = levels.concat([
-  (function() {
-    var j, len, results;
-    results = [];
-    for (j = 0, len = sevensTop.length; j < len; j++) {
-      i = sevensTop[j];
-      results.push(sevens[i]);
-    }
-    return results;
-  })()
-][0]);
-
-levels = levels.concat([
-  (function() {
-    var j, len, results;
-    results = [];
-    for (j = 0, len = sevensMeh.length; j < len; j++) {
-      i = sevensMeh[j];
-      results.push(sevens[i]);
-    }
-    return results;
-  })()
-][0]);
-
-levels = levels.concat(triangles);
-
-console.log(levels);
-
 triangles = [
   {
-    data: [1, 4, 1, 4, 1, 3, 1, 1, 1, 1, 1, 4, 1, 0, 0, 1, 3, 1, 1, 1, 1, 1, 1, 2, 1],
-    dimensions: {
-      x: 5,
-      y: 5
-    },
-    name: "tri.2 - trying"
-  }, {
     data: [1, 0, 1, 1, 1, 1, 0, 1, 5, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 5, 1, 1, 1, 1, 1],
     dimensions: {
       x: 5,
@@ -1405,8 +1364,57 @@ triangles = [
       y: 5
     },
     name: "tri.4"
+  }, {
+    data: [1, 4, 1, 4, 1, 3, 1, 1, 1, 1, 1, 4, 1, 0, 0, 1, 3, 1, 1, 1, 1, 1, 1, 2, 1],
+    dimensions: {
+      x: 5,
+      y: 5
+    },
+    name: "tri.2 - trying"
   }
 ];
+
+levels = triangles;
+
+levels = levels.concat((function() {
+  var j, len, results;
+  results = [];
+  for (j = 0, len = threesTop.length; j < len; j++) {
+    i = threesTop[j];
+    results.push(threes[i]);
+  }
+  return results;
+})());
+
+levels = levels.concat((function() {
+  var j, len, results;
+  results = [];
+  for (j = 0, len = sevensTop.length; j < len; j++) {
+    i = sevensTop[j];
+    results.push(sevens[i]);
+  }
+  return results;
+})());
+
+levels = levels.concat((function() {
+  var j, len, results;
+  results = [];
+  for (j = 0, len = sevensMeh.length; j < len; j++) {
+    i = sevensMeh[j];
+    results.push(sevens[i]);
+  }
+  return results;
+})());
+
+levels = levels.concat((function() {
+  var j, len, results;
+  results = [];
+  for (j = 0, len = sequence.length; j < len; j++) {
+    i = sequence[j];
+    results.push(sevens[i]);
+  }
+  return results;
+})());
 
 basics = [
   {
@@ -1569,12 +1577,14 @@ window.onload = function() {
     this.current = (this.current + 1) % levels.length;
     this.model["new"](levels[this.current]);
     this.vc.tiles.remove();
+    this.vc.name.remove();
     this.vc = new viewcontroller.view(this.model, view.center);
     return this.ta.go(levels[this.current].name);
   };
   return this.reset = function() {
     this.model["new"](levels[this.current]);
     this.vc.tiles.remove();
+    this.vc.name.remove();
     this.vc = new viewcontroller.view(this.model, view.center);
   };
 };
@@ -2624,22 +2634,22 @@ name: "207"
 {
 data: [0,0,1,1,0,0,0,1,1,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
 dimensions: {x: 5, y: 5},
-name: "208"
+name: "variations:\n208"
 },
 {
 data: [0,0,1,1,0,0,0,1,1,0,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1],
 dimensions: {x: 5, y: 5},
-name: "209"
+name: "variations:\n209"
 },
 {
 data: [0,0,1,1,0,0,0,1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,0,1],
 dimensions: {x: 5, y: 5},
-name: "210"
+name: "variations:\n210"
 },
 {
 data: [0,0,1,1,0,0,0,1,1,1,1,1,1,1,1,1,1,0,1,1,1,1,0,1,1],
 dimensions: {x: 5, y: 5},
-name: "211"
+name: "variations:\n211"
 },
 {
 data: [0,0,1,1,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,0,1,1,1,1,0],
@@ -2649,7 +2659,7 @@ name: "212"
 {
 data: [0,0,1,1,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0],
 dimensions: {x: 5, y: 5},
-name: "213"
+name: "variations:\n213"
 },
 {
 data: [0,0,1,1,0,0,1,1,1,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,0],
@@ -2659,7 +2669,7 @@ name: "214"
 {
 data: [0,0,1,1,0,0,1,1,1,0,1,1,0,1,1,1,1,1,1,1,0,1,1,1,1],
 dimensions: {x: 5, y: 5},
-name: "215"
+name: "variations:\n215"
 },
 {
 data: [0,0,1,1,0,0,1,1,1,1,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1],
@@ -2674,7 +2684,7 @@ name: "217"
 {
 data: [0,0,1,1,0,0,1,1,1,1,0,1,1,0,1,1,1,1,1,1,1,1,1,1,0],
 dimensions: {x: 5, y: 5},
-name: "218"
+name: "variations:\n218"
 },
 {
 data: [0,0,1,1,0,0,1,1,1,1,1,1,0,1,1,1,0,1,1,1,1,0,1,1,1],
@@ -2699,7 +2709,7 @@ name: "222"
 {
 data: [0,0,1,1,0,0,1,1,1,1,1,1,1,0,1,1,0,1,0,1,1,1,1,1,1],
 dimensions: {x: 5, y: 5},
-name: "223"
+name: "variations:\n223"
 },
 {
 data: [0,0,1,1,0,0,1,1,1,1,1,1,1,0,1,1,0,1,1,1,1,1,0,1,1],

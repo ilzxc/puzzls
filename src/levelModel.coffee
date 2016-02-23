@@ -29,6 +29,7 @@ model = (controller) ->
         @state.level = [i for i in level.data][0]
         @state.dimensions = level.dimensions
         @state.position = undefined
+        @state.name = level.name
         return
 
     @set_position = (tilexy) ->
