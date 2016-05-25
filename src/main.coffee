@@ -1,4 +1,3 @@
-utils = require './display.js'
 level = require './levelModel.js'
 viewcontroller = require './levelViewController.js'
 tc = require './titleCard.js'
@@ -20,13 +19,10 @@ titleAnimator = () ->
     }
     return @result
 
-
-
 paper.install window
 window.onload = () ->
     paper.setup 'puzzls'
 
-    fc = utils.frameCounter view.size    
     @model = new level.model this
     @current = 0
     @model.new levels[0]
@@ -41,6 +37,7 @@ window.onload = () ->
         @vc.name.remove()
         @vc = new viewcontroller.view @model, view.center
         @ta.go levels[@current].name
+        
     @reset = () ->
         @model.new levels[@current]
         @vc.tiles.remove()

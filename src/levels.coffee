@@ -1,12 +1,65 @@
 threes = (require './fives.js').levels
 sevens = (require './sevens.js').levels
+twohops = (require './2hops.js').levels
+threehops = (require './3hops.js').levels
 
 threesTop = [0...8]
 sevensTop = [32, 41, 77, 135, 137, 170]
 sevensMeh = [25, 38, 43, 45, 62, 65, 83, 95, 148, 174, 226]
 sequence = [208, 209, 210, 211, 213, 215, 218, 223]
 
+hoppy = [
+    {
+        data: [1, 0, 1, 1, 1, 1, 6, 1, 1, 1, 1, 1, 6, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+        dimensions: {x: 5, y: 5}
+        name: 'hoppy 0'
+    }
+    {
+        data: [1, 0, 1, 1, 1, 1, 1, 1, 6, 6, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+        dimensions: {x: 5, y: 5}
+        name: 'hoppy 2'
+    }
+    {
+        data: [1, 0, 1, 1, 1, 1, 1, 1, 6, 1, 1, 1, 6, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+        dimensions: {x: 5, y: 5}
+        name: 'hoppy 3'
+    }
+]
+
 triangles = [
+    {
+        data: [
+            1, 0, 1, 1, 1, 
+            1, 1, 1, 1, 1, 
+            6, 1, 1, 1, 1, 
+            1, 1, 1, 1, 1, 
+            1, 1, 1, 1, 1
+        ]
+        dimensions: {x: 5, y: 5} 
+        name: "TEST 3 SOLUTIONS"        
+    }
+
+    {
+        data: [
+            1, 0, 6, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
+        ]
+        dimensions: {x: 5, y: 5}
+        name: "TEST 11 SOLUTIONS"
+    }
+
+
+    {
+        data: [
+            1, 1, 1, 1, 1
+            1, 1, 1, 1, 1
+            1, 1, 6, 0, 1
+            1, 1, 1, 1, 1
+            1, 1, 6, 1, 1
+        ]
+        dimensions: {x: 5, y: 5} 
+        name: "TEST HOP"        
+    }
+
     {   
         data: [
             1, 0, 1, 1, 1
@@ -75,7 +128,10 @@ triangles = [
     }
 ]
 
-levels = triangles
+# levels = triangles
+levels = hoppy
+levels = levels.concat twohops
+levels = levels.concat threehops
 levels = levels.concat (threes[i] for i in threesTop)
 levels = levels.concat (sevens[i] for i in sevensTop)
 levels = levels.concat (sevens[i] for i in sevensMeh)

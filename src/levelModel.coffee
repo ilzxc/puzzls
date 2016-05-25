@@ -45,10 +45,22 @@ model = (controller) ->
         while @state.is_available direction
             np = @state.step direction
             idx = @state.idx np
+            if @state.level[idx] is 1
+                if direction.x != 0
+                    direction.x /= Math.abs(direction.x)
+                if direction.y != 0
+                    direction.y /= Math.abs(direction.y)
             if @state.level[idx] is 2 then direction = {x:  0, y: -1}
             if @state.level[idx] is 3 then direction = {x:  1, y:  0}
             if @state.level[idx] is 4 then direction = {x:  0, y:  1}
             if @state.level[idx] is 5 then direction = {x: -1, y:  0}
+            if @state.level[idx] is 6 
+                direction.x *= 2
+                direction.y *= 2
+            if @state.level[idx] is 7
+                direction = @clockwise direction
+            if @state.level[idx] is 8
+                direction = @counterclockwise(direction)
             @state.level[@state.idx np] = 0
             @state.position = np
             path.push np
@@ -59,6 +71,22 @@ model = (controller) ->
             controller.reset()   
             return []  
         path
+
+    @clockwise = (direction) ->
+        result = {}
+        if direction.y == 0
+            result.y = direction.x
+            result.x = 0
+        else if direction.x == 0
+            result.x = -direction.y
+            result.y = 0
+        result
+
+    @counterclockwise = (direction) ->
+        direction = @clockwise direction
+        direction.x *= -1
+        direction.y *= -1
+        direction
 
     steppify = (i) -> i / Math.abs i
     @clicked = (tilexy) ->

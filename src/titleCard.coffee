@@ -6,7 +6,7 @@ titleCard = (size, cardtext) ->
     }
 
     text = new PointText {
-        point: [size.width * .5, size.height * .5]
+        point: [size.width * 0.5, size.height * 0.5]
         content: cardtext
         justification: 'center'
         fontSize: 33

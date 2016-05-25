@@ -23,8 +23,23 @@ tile = (x, y, w, h, bus, taken) ->
         toAdd.rotate angle
         toAdd.onMouseDown = (event) -> @parent.children[0].onMouseDown event
         return toAdd
+    makeCircle = () ->
+        toAdd = new Path.Circle new Point(w * 0.5, h * 0.5), 10
+        toAdd.fillColor = toAdd.strokeColor = 'black'
+        return toAdd
+    makeTurn = (left) ->
+        toAdd = new Path.Arc new Point(w * 0.5, h * 0.5 + 10), new Point(w * 0.5 + (left * 10), h * 0.5), new Point(w * 0.5, h * 0.5 - 10)
+        toAdd.closed = true
+        toAdd.fillColor = toAdd.strokeColor = 'black'
+        return toAdd
     if taken >= 2 and taken <= 5
         result.push makeTriangle 90 * (taken - 2)
+    if taken == 6
+        result.push makeCircle()
+    if taken == 7
+        result.push makeTurn 1
+    if taken == 8
+        result.push makeTurn -1 
     result = new Group result
     result.translate [x * w, y * h]
     return result

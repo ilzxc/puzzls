@@ -1,5 +1,5 @@
 solver = (require './solver.js').makesolve
-levels =(require './2.js').levels
+levels =(require './1.js').levels
 
 compare = (a, b) -> (v == b[i] for v,i in a).reduce ((x,y) -> x & y), true
 
@@ -17,7 +17,7 @@ solvables = []
 for l in levels
     lvl = (i for i in l)
     solutions = solver lvl
-    if solutions.length == 1
+    if solutions.length == 0
         solvables.push l
 
 result = []
