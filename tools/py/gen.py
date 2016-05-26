@@ -39,5 +39,5 @@ def makefile(lvls, name):
     f.write('\nmodule.exports = { levels: levels }\n')
     f.close()
 
-for i in range(1, 10):
-    makefile(i)
+# for i in range(1, 10):
+#     makefile(i)

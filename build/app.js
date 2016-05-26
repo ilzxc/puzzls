@@ -2447,6 +2447,11 @@ view = function(model, center) {
   this.tiles.translate([center.x - (w * 0.5), center.y - (h * 0.5)]);
   this.signal = function(tile) {
     var idx, l, len, results, step, steps;
+    if (Key.isDown('n')) {
+      console.log("trigger advance");
+      model.controller.advance();
+      return;
+    }
     steps = this.model.clicked(tile.info);
     results = [];
     for (idx = l = 0, len = steps.length; l < len; idx = ++l) {
@@ -2485,6 +2490,13 @@ sequence = [208, 209, 210, 211, 213, 215, 218, 223];
 
 hoppy = [
   {
+    data: [6, 1, 6, 1, 1, 1, 1, 1, 1, 1, 6, 1, 1, 6, 1, 1, 1, 1, 1, 1, 1, 1, 1, 6, 1],
+    dimensions: {
+      x: 5,
+      y: 5
+    },
+    name: "hop only test"
+  }, {
     data: [1, 0, 1, 1, 1, 1, 6, 1, 1, 1, 1, 1, 6, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
     dimensions: {
       x: 5,

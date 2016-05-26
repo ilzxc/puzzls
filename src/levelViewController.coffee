@@ -12,7 +12,7 @@ tile = (x, y, w, h, bus, taken) ->
         strokeColor: 'black'
         strokeWidth: 2
         fillColor: if taken is 0 then colorTaken else colorFree
-        onMouseDown: (event) -> 
+        onMouseDown: (event) ->
             bus.signal this
         reset: () -> 
             @fillColor = if taken is 0 then colorTaken else colorFree
@@ -101,6 +101,9 @@ view = (model, center) ->
     h = 60 * model.state.dimensions.y
     @tiles.translate [center.x - (w * 0.5), center.y - (h * 0.5)]
     @signal = (tile) ->
+        if Key.isDown('n')
+            model.controller.advance()
+            return
         steps = @model.clicked tile.info
         for step, idx in steps
             @animator.add @tiles.children[ @model.state.idx step ], 70 * idx
